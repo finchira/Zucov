@@ -39,6 +39,14 @@ jobs:
         needs: build
 
         steps:
+            
+            - name: Get Code From Repos
+              uses: actions/checkout@v4
+
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v4
+              with:
+                dotnet-version: ${{env.DTN_VER}}
 
             - name: Test
               run: dotnet test --no-build --configuration Release --verbosity normal
