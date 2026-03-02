@@ -15,58 +15,28 @@ env:
 
 
 jobs:
-    setup:
+    build:
         runs-on: ubuntu-latest
-        
+
         steps:
             - name: Get Code From Repos
               uses: actions/checkout@v4
 
             - name: Setup .NET
-              id: setup-dotnet
               uses: actions/setup-dotnet@v4
               with:
                 dotnet-version: ${{env.DTN_VER}}
             
-            - name: Restore Dependencies
+            - name: Restorre Dependencies
               run: dotnet restore
-            
-            - name: Cache .NET installation
-              uses: actions/cache@v3
-              with:
-                path: ~/.dotnet
-                key: ${{ runner.os }}-dotnet-${{env.DTN_VER}}
+    
+    test:
+        runs-on: ubuntu-lates
+        needs: build
 
-    build:
-        runs-on: ubuntu-latest
-        needs: setup
-        
         steps:
-            - name: Get Code From Repos
-              uses: actions/checkout@v4
-
-            - name: Restore .NET from cache
-              uses: actions/cache@v3
-              with:
-                path: ~/.dotnet
-                key: ${{ runner.os }}-dotnet-${{env.DTN_VER}}
-            
             - name: Build Solution
               run: dotnet build --no-restore --configuration Release
 
-    test:
-        runs-on: ubuntu-latest
-        needs: build
-        
-        steps:
-            - name: Get Code From Repos
-              uses: actions/checkout@v4
-
-            - name: Restore .NET from cache
-              uses: actions/cache@v3
-              with:
-                path: ~/.dotnet
-                key: ${{ runner.os }}-dotnet-${{env.DTN_VER}}
-            
             - name: Test
               run: dotnet test --no-build --configuration Release --verbosity normal
