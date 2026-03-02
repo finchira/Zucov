@@ -32,7 +32,12 @@ jobs:
     
             - name: Build Solution
               run: dotnet build --no-restore --configuration Release
-
+            
+            - name: Upload build artifact
+              uses: actions/upload-artifact@v3
+              with:
+                name: upload-build-packages
+                path: dist/
 
     test:
         runs-on: ubuntu-lates
@@ -43,10 +48,17 @@ jobs:
             - name: Get Code From Repos
               uses: actions/checkout@v4
 
-            - name: Setup .NET
-              uses: actions/setup-dotnet@v4
+            - name: Download build artifact
+              uses: actions/download-artifact@v3
               with:
-                dotnet-version: ${{env.DTN_VER}}
-
-            - name: Test
-              run: dotnet test --no-build --configuration Release --verbosity normal
+                name: upload-build-packages
+                path: dist/
+      
+            - name: List downloaded files
+              run: ls -la dist/
+      
+            - name: Install test dependencies
+              run: npm install
+      
+            - name: Run tests on downloaded build
+              run: npm run test:dist
