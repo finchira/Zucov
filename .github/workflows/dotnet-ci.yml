@@ -35,8 +35,8 @@ jobs:
 
 
     test:
-        runs-on: ubuntu-lates
         needs: build
+        runs-on: ubuntu-lates
 
         steps:
             
