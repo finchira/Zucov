@@ -30,16 +30,15 @@ jobs:
             - name: Restorre Dependencies
               run: dotnet restore
     
-                
+            - name: Build Solution
+              run: dotnet build --no-restore --configuration Release  
+
             - name: Cache Dependendencies
               uses:  actions/cache@v3
               with:
                path: ~/.nuget/packages
                key: ${{ runner.os }}-nuget-${{hashFiles('**/*.csproj')}}
                restore-keys: ${{ runner.os }}-nuget-
-
-            - name: Build Solution
-              run: dotnet build --no-restore --configuration Release
 
 
     testandbuild:
@@ -50,15 +49,6 @@ jobs:
             
             - name: Get Code From Repos
               uses: actions/checkout@v4
-
-            - name: Setup .NET
-              uses: actions/setup-dotnet@v4
-              with:
-                dotnet-version: ${{env.DTN_VER}}
-
-            - name: Build Solution
-              run: dotnet build --configuration Release
-
 
             - name: Test
               run: dotnet test --no-build --configuration Release --verbosity normal
