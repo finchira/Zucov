@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . .
 
 RUN dotnet restore
-RUN dotnet publish .\Zucov.Api\Zucov.Api.csproj -c Release -o out
+RUN dotnet publish Zucov.Api/Zucov.Api.csproj -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/sdk:9.0 as release
 WORKDIR /app
