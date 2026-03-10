@@ -73,11 +73,7 @@ jobs:
       - name: Build application for release  
         run: |    
           dotnet restore    
-          dotnet publish Zucov.Api/Zucov.Api.csproj \      
-            -c Release \      
-            -o ./publish-release \      
-            --self-contained false \      
-            -p:PublishSingleFile=false
+          dotnet publish Zucov.Api/Zucov.Api.csproj -c Release -o ./publish-release --self-contained false -p:PublishSingleFile=false
 
       - name: Create release archive  
         run: |    
