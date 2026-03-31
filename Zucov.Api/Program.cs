@@ -2,6 +2,9 @@ using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var enviroment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIROMENT") ?? "Production";
+var confMessage = builder.Configuration.GetValue<string>("Message") ?? "fail";
+
 builder.Services.AddOpenApi();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
